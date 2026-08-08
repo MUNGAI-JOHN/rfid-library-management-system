@@ -1,0 +1,109 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  fullName  String
+  email     String   @unique
+  password  String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+enum PatronStatus{
+  PROBLEMATIC_PATRON
+  NORMAL_PATRON
+}
+model Patron {
+  id        Int      @id @default(autoincrement())
+  fullName  String
+  rfid_uid  String    @unique
+  status  PatronStatus  @default(NORMAL_PATRON)
+
+  borrowingBooks BorrowingBook[]
+  entranceLogs   EntranceLogs[]
+  securityEvents SecurityEvent[]
+  exitLogs       ExitLogs[]
+}
+
+model Book {
+  id          Int   @id @default(autoincrement())
+  bookTitle   String   @unique
+  rfid_bid    String   @unique
+  shelfId   Int  
+  available Boolean @default(true)
+  shelf        Shelf    @relation(fields: [shelfId], references: [id])
+  borrowingBooks BorrowingBook[]
+  securityEvents SecurityEvent[]
+  exitLogs ExitLogs[]
+}
+
+model Shelf {
+  id          Int      @id @default(autoincrement())
+  shelfName   String   @unique
+  description String?
+
+  books Book[]
+}
+
+model  BorrowingBook  {
+  id      Int  @id @default(autoincrement())
+
+   patronRfid String
+   bookRfid    String
+
+  borrowDate  DateTime  @default(now())
+  dueDate     DateTime
+
+  returned      Boolean  @default(false)
+  returnedDate  DateTime?
+ 
+  patron Patron @relation(fields:  [patronRfid], references: [rfid_uid])
+  book   Book  @relation(fields:  [bookRfid], references: [rfid_bid])
+}
+
+model  EntranceLogs {
+  id      Int  @id @default(autoincrement())
+  patronRfid  String
+  entranceTime  DateTime @default(now())
+  patron Patron @relation(fields:  [patronRfid], references: [rfid_uid])
+}
+
+model  ExitLogs {
+  id      Int  @id @default(autoincrement())
+   patronRfid String
+   bookRfid   String?
+  bookAuthorized Boolean @default(false)
+  exitTime  DateTime @default(now())
+  patron Patron @relation(fields:  [patronRfid], references: [rfid_uid])
+  book   Book?  @relation(fields:  [bookRfid], references: [rfid_bid])
+}
+
+enum SecurityEventType {
+  BOOK_REMOVED
+}
+
+model SecurityEvent {
+
+  id Int @id @default(autoincrement())
+
+  patronRfid String
+  bookRfid String
+
+  shelfName String
+
+  imageUrl String?
+
+  eventType SecurityEventType @default(BOOK_REMOVED)
+
+  createdAt DateTime @default(now())
+
+  patron Patron @relation(fields: [patronRfid], references: [rfid_uid])
+  book Book @relation(fields: [bookRfid], references: [rfid_bid])
+
+}

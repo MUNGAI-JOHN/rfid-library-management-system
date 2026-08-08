@@ -1,0 +1,149 @@
+.hero {
+  position: relative;
+
+  width: 100%;
+
+  height: 100vh;
+
+  overflow: hidden;
+}
+
+.hero-image {
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.overlay {
+  position: absolute;
+
+  top: 0;
+
+  left: 0;
+
+  width: 100%;
+
+  height: 100%;
+
+  background: rgba(0, 33, 71, 0.65);
+}
+
+.hero-content {
+  position: absolute;
+
+  top: 55%;
+
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  width: 80%;
+
+  max-width: 900px;
+
+  color: white;
+
+  text-align: center;
+}
+
+.hero-subtitle {
+  color: #d4af37;
+
+  letter-spacing: 3px;
+
+  font-size: 18px;
+}
+
+.hero-content h1 {
+  margin-top: 10px;
+
+  font-size: 65px;
+
+  line-height: 1.2;
+}
+
+.hero-content p {
+  margin-top: 30px;
+
+  font-size: 20px;
+
+  line-height: 1.8;
+}
+
+.hero-buttons {
+  margin-top: 30px;
+
+  display: flex;
+
+  justify-content: center;
+
+  gap: 20px;
+}
+
+.explore {
+  background: #d4af37;
+
+  color: #002147;
+
+  padding: 15px 35px;
+
+  border-radius: 40px;
+
+  font-weight: bold;
+
+  transition: 0.3s;
+}
+
+.login {
+  border: 2px solid white;
+
+  color: white;
+
+  padding: 15px 35px;
+
+  border-radius: 40px;
+
+  transition: 0.3s;
+}
+
+.explore:hover {
+  transform: translateY(-4px);
+}
+
+.login:hover {
+  background: white;
+
+  color: #002147;
+}
+
+.scroll-down {
+  position: absolute;
+
+  bottom: 40px;
+
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  color: white;
+
+  font-size: 35px;
+
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0% {
+    transform: translate(-50%, 0);
+  }
+
+  50% {
+    transform: translate(-50%, 10px);
+  }
+
+  100% {
+    transform: translate(-50%, 0);
+  }
+}

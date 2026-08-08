@@ -1,0 +1,107 @@
+.books-page {
+  padding: 35px;
+}
+
+.books-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.books-header h1 {
+  margin: 0;
+  color: #0b6e4f;
+  font-size: 32px;
+}
+
+.books-header p {
+  margin-top: 6px;
+  color: #777;
+}
+
+.book-form-card {
+  background: white;
+  max-width: 700px;
+  padding: 35px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
+}
+
+.form-title {
+  margin-bottom: 25px;
+}
+
+.form-title h2 {
+  margin: 0;
+  color: #222;
+}
+
+.form-title p {
+  color: #777;
+  margin-top: 7px;
+}
+
+.form-group {
+  margin-bottom: 22px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 13px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #0b6e4f;
+}
+
+.book-form-card button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  background: #0b6e4f;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.book-form-card button:hover {
+  background: #095c42;
+}
+
+.book-form-card button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.success-message {
+  background: #e8f7ef;
+  color: #0b6e4f;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.error-message {
+  background: #fdecec;
+  color: #c62828;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
