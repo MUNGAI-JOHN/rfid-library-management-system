@@ -1,18 +1,62 @@
-import { useState } from "react";
-import { createBook } from "../../api/book.api";
+import { useEffect, useState } from "react";
+import { createBook, getBooks } from "../../api/book.api";
 import "./Books.css";
 
 function Books() {
+  // =========================
+  // BOOK LIST
+  // =========================
+  const [books, setBooks] = useState([]);
+
+  // =========================
+  // ADD BOOK FORM
+  // =========================
+  const [showForm, setShowForm] = useState(false);
+
   const [formData, setFormData] = useState({
     bookTitle: "",
     rfid_bid: "",
     shelfName: "A",
   });
 
+  // =========================
+  // MESSAGES & LOADING
+  // =========================
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+  const [booksLoading, setBooksLoading] = useState(true);
+
+  // =========================
+  // GET ALL BOOKS
+  // =========================
+  const loadBooks = async () => {
+    try {
+      setBooksLoading(true);
+
+      const response = await getBooks();
+
+      if (response.success) {
+        setBooks(response.data);
+      }
+    } catch (error) {
+      console.error("Get books error:", error);
+
+      setError(error.response?.data?.message || "Failed to load books.");
+    } finally {
+      setBooksLoading(false);
+    }
+  };
+
+  // Load books when page opens
+  useEffect(() => {
+    loadBooks();
+  }, []);
+
+  // =========================
+  // HANDLE FORM INPUT
+  // =========================
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -20,6 +64,34 @@ function Books() {
     });
   };
 
+  // =========================
+  // OPEN ADD BOOK FORM
+  // =========================
+  const handleOpenForm = () => {
+    setMessage("");
+    setError("");
+    setShowForm(true);
+  };
+
+  // =========================
+  // CLOSE ADD BOOK FORM
+  // =========================
+  const handleCloseForm = () => {
+    setShowForm(false);
+
+    setFormData({
+      bookTitle: "",
+      rfid_bid: "",
+      shelfName: "A",
+    });
+
+    setMessage("");
+    setError("");
+  };
+
+  // =========================
+  // CREATE BOOK
+  // =========================
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -34,11 +106,18 @@ function Books() {
 
       setMessage("Book added successfully.");
 
+      // Reset form
       setFormData({
         bookTitle: "",
         rfid_bid: "",
         shelfName: "A",
       });
+
+      // Refresh book list
+      await loadBooks();
+
+      // Close form
+      setShowForm(false);
     } catch (error) {
       console.error("Create book error:", error);
 
@@ -50,62 +129,147 @@ function Books() {
 
   return (
     <div className="books-page">
+      {/* =========================
+          PAGE HEADER
+      ========================= */}
       <div className="books-header">
         <div>
           <h1>Books</h1>
-          <p>Add books to the library system</p>
+
+          <p>Manage books in the library system.</p>
         </div>
+
+        <button type="button" className="add-book-button" onClick={handleOpenForm}>
+          + Add Book
+        </button>
       </div>
 
-      <div className="book-form-card">
-        <div className="form-title">
-          <h2>Add New Book</h2>
-          <p>Register a book and associate it with its RFID tag.</p>
+      {/* =========================
+          SUCCESS MESSAGE
+      ========================= */}
+      {message && <div className="success-message">{message}</div>}
+
+      {/* =========================
+          ERROR MESSAGE
+      ========================= */}
+      {error && <div className="error-message">{error}</div>}
+
+      {/* =========================
+          ADD BOOK FORM
+      ========================= */}
+      {showForm && (
+        <div className="book-form-card">
+          <div className="form-title">
+            <div>
+              <h2>Add New Book</h2>
+
+              <p>Register a book and associate it with its RFID tag.</p>
+            </div>
+
+            <button type="button" className="close-form-button" onClick={handleCloseForm}>
+              ×
+            </button>
+          </div>
+
+          <form onSubmit={handleSubmit}>
+            {/* BOOK TITLE */}
+            <div className="form-group">
+              <label>Book Title</label>
+
+              <input
+                type="text"
+                name="bookTitle"
+                value={formData.bookTitle}
+                onChange={handleChange}
+                placeholder="Enter book title"
+                required
+              />
+            </div>
+
+            {/* RFID */}
+            <div className="form-group">
+              <label>RFID Book ID</label>
+
+              <input
+                type="text"
+                name="rfid_bid"
+                value={formData.rfid_bid}
+                onChange={handleChange}
+                placeholder="Enter RFID UID"
+                required
+              />
+            </div>
+
+            {/* SHELF */}
+            <div className="form-group">
+              <label>Shelf</label>
+
+              <select name="shelfName" value={formData.shelfName} onChange={handleChange}>
+                <option value="A">Shelf A</option>
+              </select>
+            </div>
+
+            {/* FORM BUTTONS */}
+            <div className="form-buttons">
+              <button type="button" className="cancel-button" onClick={handleCloseForm}>
+                Cancel
+              </button>
+
+              <button type="submit" className="submit-book-button" disabled={loading}>
+                {loading ? "Adding Book..." : "Add Book"}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
+      {/* =========================
+          BOOK LIST
+      ========================= */}
+      <div className="books-list-section">
+        <div className="books-list-header">
+          <h2>All Books</h2>
+
+          <span>
+            {books.length} {books.length === 1 ? "book" : "books"}
+          </span>
         </div>
 
-        {message && <div className="success-message">{message}</div>}
+        {booksLoading ? (
+          <p>Loading books...</p>
+        ) : books.length === 0 ? (
+          <p>No books registered yet.</p>
+        ) : (
+          <div className="books-table-container">
+            <table className="books-table">
+              <thead>
+                <tr>
+                  <th>Title</th>
 
-        {error && <div className="error-message">{error}</div>}
+                  <th>RFID</th>
 
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Book Title</label>
+                  <th>Shelf</th>
 
-            <input
-              type="text"
-              name="bookTitle"
-              value={formData.bookTitle}
-              onChange={handleChange}
-              placeholder="Enter book title"
-              required
-            />
+                  <th>Location</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {books.map((book) => (
+                  <tr key={book.id}>
+                    <td>{book.bookTitle}</td>
+
+                    <td>{book.rfid_bid}</td>
+
+                    <td>{book.shelf?.shelfName || "Not assigned"}</td>
+
+                    <td>{book.location}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-
-          <div className="form-group">
-            <label>RFID Book ID</label>
-
-            <input
-              type="text"
-              name="rfid_bid"
-              value={formData.rfid_bid}
-              onChange={handleChange}
-              placeholder="Enter RFID UID"
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Shelf</label>
-
-            <select name="shelfName" value={formData.shelfName} onChange={handleChange}>
-              <option value="A">Shelf A</option>
-            </select>
-          </div>
-
-          <button type="submit" disabled={loading}>
-            {loading ? "Adding Book..." : "Add Book"}
-          </button>
-        </form>
+        )}
       </div>
     </div>
   );

@@ -5,3 +5,8 @@ export const createBook = async (bookData) => {
 
   return response.data;
 };
+export const getBooks = async () => {
+  const response = await api.get("/book/all");
+
+  return response.data;
+};

@@ -105,3 +105,129 @@
   border-radius: 8px;
   margin-bottom: 20px;
 }
+/* =========================
+   BOOKS LIST
+========================= */
+
+.books-list-section {
+  margin-top: 35px;
+}
+
+.books-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.books-list-header h2 {
+  margin: 0;
+  color: #222;
+}
+
+.books-list-header span {
+  color: #777;
+  font-size: 14px;
+}
+
+/* Table container */
+
+.books-table-container {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
+  overflow-x: auto;
+}
+
+/* Table */
+
+.books-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.books-table th,
+.books-table td {
+  padding: 16px 20px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.books-table th {
+  background: #f8faf9;
+  color: #555;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.books-table td {
+  color: #333;
+  font-size: 14px;
+}
+
+.books-table tbody tr:hover {
+  background: #f8faf9;
+}
+
+.books-table tbody tr:last-child td {
+  border-bottom: none;
+}
+.add-book-button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #0b6e4f;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.add-book-button:hover {
+  background: #095c42;
+}
+
+.form-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.close-form-button {
+  width: 35px !important;
+  height: 35px;
+  padding: 0 !important;
+  border: none;
+  background: #f1f1f1 !important;
+  color: #555 !important;
+  font-size: 24px !important;
+  cursor: pointer;
+}
+
+.close-form-button:hover {
+  background: #e5e5e5 !important;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.form-buttons button {
+  flex: 1;
+}
+
+.cancel-button {
+  background: #eee !important;
+  color: #333 !important;
+}
+
+.cancel-button:hover {
+  background: #ddd !important;
+}
+
+.submit-book-button {
+  background: #0b6e4f !important;
+  color: white !important;
+}

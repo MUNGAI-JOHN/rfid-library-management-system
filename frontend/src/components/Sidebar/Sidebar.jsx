@@ -25,8 +25,10 @@ function Sidebar() {
 
       <ul className="menu">
         <li className="active">
-          <FaHome />
-          <span>Dashboard</span>
+          <Link to="/dashboard">
+            <FaHome />
+            <span>Dashboard</span>
+          </Link>
         </li>
 
         <li>
@@ -44,23 +46,31 @@ function Sidebar() {
         </li>
 
         <li>
-          <FaLayerGroup />
-          <span>Shelves</span>
+          <Link to="/dashboard/shelves">
+            <FaLayerGroup />
+            <span>Shelves</span>
+          </Link>
         </li>
 
         <li>
-          <FaExchangeAlt />
-          <span>Borrowing</span>
+          <Link to="/dashboard/borrowing">
+            <FaExchangeAlt />
+            <span>Borrowing</span>
+          </Link>
         </li>
 
         <li>
-          <FaDoorOpen />
-          <span>Entrance</span>
+          <Link to="/dashboard/entrance">
+            <FaDoorOpen />
+            <span>Entrance</span>
+          </Link>
         </li>
 
         <li>
-          <FaDoorClosed />
-          <span>Exit</span>
+          <Link to="/dashboard/exit">
+            <FaDoorClosed />
+            <span>Exit</span>
+          </Link>
         </li>
 
         <li>

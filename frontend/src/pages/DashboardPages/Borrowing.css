@@ -1,0 +1,260 @@
+.borrowing-page {
+  padding: 35px;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.borrowing-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.borrowing-header h1 {
+  margin: 0;
+  color: #0b6e4f;
+  font-size: 32px;
+}
+
+.borrowing-header p {
+  margin-top: 6px;
+  color: #777;
+}
+
+/* =========================
+   REFRESH BUTTON
+========================= */
+
+.refresh-button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #0b6e4f;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.refresh-button:hover {
+  background: #095c42;
+}
+
+.refresh-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* =========================
+   STATS
+========================= */
+
+.borrowing-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: white;
+  padding: 22px;
+  border-radius: 14px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
+}
+
+.stat-card p {
+  margin: 0;
+  color: #777;
+  font-size: 14px;
+}
+
+.stat-card h2 {
+  margin: 10px 0 0;
+  color: #0b6e4f;
+  font-size: 30px;
+}
+
+/* =========================
+   MAIN CARD
+========================= */
+
+.borrowing-card {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
+  overflow: hidden;
+}
+
+.table-header {
+  padding: 25px;
+  border-bottom: 1px solid #eee;
+}
+
+.table-header h2 {
+  margin: 0;
+  color: #222;
+}
+
+.table-header p {
+  margin-top: 6px;
+  color: #777;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: #f8faf9;
+}
+
+th {
+  padding: 15px 20px;
+  text-align: left;
+  color: #555;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+td {
+  padding: 17px 20px;
+  border-top: 1px solid #eee;
+  color: #444;
+  font-size: 14px;
+}
+
+tbody tr:hover {
+  background: #fafafa;
+}
+
+/* =========================
+   PATRON / BOOK INFO
+========================= */
+
+.patron-info,
+.book-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.patron-info strong,
+.book-info strong {
+  color: #333;
+  font-size: 14px;
+}
+
+.patron-info small,
+.book-info small {
+  margin-top: 4px;
+  color: #999;
+  font-size: 12px;
+}
+
+/* =========================
+   LOCATION
+========================= */
+
+.location-badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: #f1f5f3;
+  color: #0b6e4f;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* =========================
+   STATUS
+========================= */
+
+.status-badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.status-borrowed {
+  background: #e8f7ef;
+  color: #0b6e4f;
+}
+
+.status-returned {
+  background: #e8f0ff;
+  color: #315ea8;
+}
+
+.status-overdue {
+  background: #fdecec;
+  color: #c62828;
+}
+
+/* =========================
+   STATES
+========================= */
+
+.loading-state,
+.empty-state {
+  padding: 50px;
+  text-align: center;
+}
+
+.empty-state h3 {
+  margin-bottom: 8px;
+}
+
+.empty-state p {
+  color: #777;
+}
+
+/* =========================
+   ERROR
+========================= */
+
+.error-message {
+  background: #fdecec;
+  color: #c62828;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+  .borrowing-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .borrowing-page {
+    padding: 20px;
+  }
+
+  .borrowing-header {
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .borrowing-stats {
+    grid-template-columns: 1fr;
+  }
+}

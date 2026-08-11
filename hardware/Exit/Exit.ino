@@ -7,14 +7,14 @@
 #include <LiquidCrystal_I2C.h>
 #include <ArduinoJson.h>
 
-// ==================== WI-FI & BACKEND CONFIGURATION ====================
+//WI-FI & BACKEND CONFIGURATION
 const char* ssid     = "raspberrypi";       // Your Wi-Fi Name
 const char* password = "raspberrypi";   // Your Wi-Fi Password
 
 // Replace 192.168.1.50 with your laptop's Local IPv4 Address
-const char* serverEndpoint = "http://192.168.1.50:3000/api/exit/verify";
+const char* serverEndpoint = "http://192.168.1.50:5121/api/exit/scan";
 
-// ==================== PIN DEFINITIONS ====================
+//PIN DEFINITIONS
 #define RST_PIN         16    // Reset Pin for RFID
 #define SS_PIN          5     // Chip Select (SDA) for Exit RFID Reader
 #define SERVO_PIN       13    // Gate Servo Motor Signal
@@ -177,7 +177,7 @@ void verifyExitWithBackend(String patron, String book) {
 
           digitalWrite(GREEN_LED_PIN, HIGH);
           exitGate.write(90); // Open Servo Gate
-          delay(3500);        // Hold open for patron to pass
+          delay(3000);        // Hold open for patron to pass
           exitGate.write(0);  // Close Servo Gate
           digitalWrite(GREEN_LED_PIN, LOW);
 

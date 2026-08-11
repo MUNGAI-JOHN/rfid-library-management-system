@@ -3,7 +3,11 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import DashboardLayout from "./pages/DashboardLayout";
 import Books from "./pages/DashboardPages/Books";
+import Borrowing from "./pages/DashboardPages/Borrowing";
+import Entrance from "./pages/DashboardPages/Entrance";
+import Exit from "./pages/DashboardPages/Exit";
 import Patrons from "./pages/DashboardPages/Patrons";
+import Shelves from "./pages/DashboardPages/Shelves";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -20,6 +24,11 @@ function App() {
           <Route index element={<Dashboard />} />
           <Route path="patrons" element={<Patrons />} />
           <Route path="books" element={<Books />} />
+          <Route path="shelves" element={<Shelves />} />
+          <Route path="borrowing" element={<Borrowing />} />
+          <Route path="entrance" element={<Entrance />} />
+          <Route path="exit" element={<Exit />} />
+          <Route path="*" element={<div>404 Not Found</div>} />
         </Route>
       </Routes>
     </BrowserRouter>

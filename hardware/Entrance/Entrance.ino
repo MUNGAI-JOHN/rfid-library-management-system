@@ -7,14 +7,14 @@
 #include <LiquidCrystal_I2C.h>
 #include <ArduinoJson.h>
 
-// ==================== WI-FI CONFIGURATION ====================
+// WIFI CONFIG
 const char* ssid     = "raspberrypi";       // Your Wi-Fi Name
 const char* password = "raspberrypi";   // Your Wi-Fi Password
 
 // Replace with your laptop's Local IPv4 Address and Backend Port
-const char* serverEndpoint = "http://192.168.2.221:3000/api/auth/login";
+const char* serverEndpoint = "http://192.168.2.221:5121/api/entrance/scan";
 
-// ==================== PIN DEFINITIONS ====================
+//PIN DEFINITIONS
 #define RST_PIN         16    // Reset Pin for RFID
 #define SS_PIN          5     // Chip Select (SDA) for Entrance RFID Reader
 #define SERVO_PIN       13    // Signal pin for Entrance Gate Servo Motor
@@ -60,7 +60,7 @@ void setup() {
   lcd.setCursor(0, 0);
   lcd.print("Entrance Ready");
   lcd.setCursor(0, 1);
-  lcd.print("Scan ID Card...");
+  lcd.print("Scan PATRONID Card...");
 }
 
 void loop() {
@@ -94,7 +94,7 @@ void loop() {
 
     // Construct JSON Payload
     StaticJsonDocument<128> doc;
-    doc["rfid"] = cardUID;
+    doc["patronRfid"] = cardUID;
     String requestBody;
     serializeJson(doc, requestBody);
 
