@@ -24,6 +24,16 @@ const enterLibrary = async (patronRfid) => {
   return entrance;
 };
 
+const getEntranceLog = async () => {
+  const entranceLog = await prisma.entranceLogs.findMany({
+    orderBy: {
+      id: "desc",
+    },
+  });
+  return entranceLog;
+};
+
 module.exports = {
   enterLibrary,
+  getEntranceLog,
 };

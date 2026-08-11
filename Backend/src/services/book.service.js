@@ -46,6 +46,20 @@ const create = async (bookData) => {
   };
 };
 
+const getBooks = async () => {
+  const books = await prisma.book.findMany({
+    include: {
+      shelf: true,
+    },
+    orderBy: {
+      id: "desc",
+    },
+  });
+
+  return books;
+};
+
 module.exports = {
   create,
+  getBooks,
 };

@@ -23,35 +23,36 @@ const exitLibrary = async (patronRfid, bookRfid = null) => {
 
     return {
       authorized: true,
-      message: "No library book detected.",
+      message: "No library book detected. Exit allowed.",
       exitLog,
     };
   }
 
-  // STEP 3: Check if scanned RFID belongs to a library book
+  // STEP 3: Check whether RFID belongs to a registered book
   const book = await prisma.book.findUnique({
     where: {
       rfid_bid: bookRfid,
     },
   });
 
-  // Unknown book (not registered)
+  // Unknown RFID = personal/non-library item
   if (!book) {
     const exitLog = await prisma.exitLogs.create({
       data: {
         patronRfid,
+        bookRfid,
         bookAuthorized: true,
       },
     });
 
     return {
       authorized: true,
-      message: "Object is not a library resource.",
+      message: "Unknown RFID. No registered library book detected.",
       exitLog,
     };
   }
 
-  // STEP 4: Check borrowing record
+  // STEP 4: Check whether this patron has borrowed this book
   const borrowing = await prisma.borrowingBook.findFirst({
     where: {
       patronRfid,
@@ -60,7 +61,7 @@ const exitLibrary = async (patronRfid, bookRfid = null) => {
     },
   });
 
-  // Book was not borrowed
+  // STEP 5: Library book has NOT been borrowed
   if (!borrowing) {
     const exitLog = await prisma.exitLogs.create({
       data: {
@@ -72,33 +73,14 @@ const exitLibrary = async (patronRfid, bookRfid = null) => {
 
     return {
       authorized: false,
-      message: "Unauthorized library book.",
+      message: "Unauthorized library book. This book has not been borrowed.",
       exitLog,
     };
   }
 
-  // STEP 5: Mark borrowing as returned
-  await prisma.borrowingBook.update({
-    where: {
-      id: borrowing.id,
-    },
-    data: {
-      returned: true,
-      returnedDate: new Date(),
-    },
-  });
+  // STEP 6: Book was properly borrowed
+  // DO NOT mark it as returned here.
 
-  // STEP 6: Make the book available again
-  await prisma.book.update({
-    where: {
-      rfid_bid: bookRfid,
-    },
-    data: {
-      available: true,
-    },
-  });
-
-  // STEP 7: Save exit log
   const exitLog = await prisma.exitLogs.create({
     data: {
       patronRfid,
@@ -109,11 +91,48 @@ const exitLibrary = async (patronRfid, bookRfid = null) => {
 
   return {
     authorized: true,
-    message: "Exit authorized.",
+    message: "Exit authorized. Borrowed book confirmed.",
     exitLog,
+    book: {
+      bookTitle: book.bookTitle,
+      rfid_bid: book.rfid_bid,
+      location: book.location,
+    },
+    borrowing: {
+      id: borrowing.id,
+      borrowDate: borrowing.borrowDate,
+      dueDate: borrowing.dueDate,
+    },
   };
+};
+
+const getExitLogs = async () => {
+  const exitLogs = await prisma.exitLogs.findMany({
+    orderBy: {
+      id: "desc",
+    },
+    include: {
+      patron: {
+        select: {
+          id: true,
+          fullName: true,
+          rfid_uid: true,
+        },
+      },
+      book: {
+        select: {
+          id: true,
+          bookTitle: true,
+          rfid_bid: true,
+        },
+      },
+    },
+  });
+
+  return exitLogs;
 };
 
 module.exports = {
   exitLibrary,
+  getExitLogs,
 };

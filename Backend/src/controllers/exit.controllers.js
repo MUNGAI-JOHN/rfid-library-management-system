@@ -15,6 +15,20 @@ const exitLibrary = async (req, res, next) => {
   }
 };
 
+const getExitLogs = async (req, res, next) => {
+  try {
+    const exitLogs = await exitService.getExitLogs();
+
+    res.status(200).json({
+      success: true,
+      data: exitLogs,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   exitLibrary,
+  getExitLogs,
 };

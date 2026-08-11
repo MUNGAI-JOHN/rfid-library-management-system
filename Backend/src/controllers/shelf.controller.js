@@ -13,20 +13,41 @@ const create = async (req, res, next) => {
   }
 };
 
-const getAll = async (req, res, next) => {
+const getAllShelves = async (req, res, next) => {
   try {
-    const shelves = await shelfService.getAll();
+    const shelves = await shelfService.getAllShelves();
 
-    res.json({
+    res.status(200).json({
       success: true,
       data: shelves,
     });
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getShelfById = async (req, res, next) => {
+  try {
+    const shelf = await shelfService.getShelfById(req.params.id);
+
+    if (!shelf) {
+      return res.status(404).json({
+        success: false,
+        message: "Shelf not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: shelf,
+    });
+  } catch (error) {
+    next(error);
   }
 };
 
 module.exports = {
   create,
-  getAll,
+  getAllShelves,
+  getShelfById,
 };

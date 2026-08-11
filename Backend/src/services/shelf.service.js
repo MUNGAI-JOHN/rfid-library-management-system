@@ -19,15 +19,62 @@ const create = async ({ shelfName, description }) => {
   });
 };
 
-const getAll = async () => {
+const getAllShelves = async () => {
   return await prisma.shelf.findMany({
     orderBy: {
       shelfName: "asc",
+    },
+
+    include: {
+      books: {
+        where: {
+          location: "ON_SHELF",
+        },
+
+        orderBy: {
+          bookTitle: "asc",
+        },
+
+        select: {
+          id: true,
+          bookTitle: true,
+          rfid_bid: true,
+          location: true,
+        },
+      },
+    },
+  });
+};
+
+const getShelfById = async (id) => {
+  return await prisma.shelf.findUnique({
+    where: {
+      id: Number(id),
+    },
+
+    include: {
+      books: {
+        where: {
+          location: "ON_SHELF",
+        },
+
+        orderBy: {
+          bookTitle: "asc",
+        },
+
+        select: {
+          id: true,
+          bookTitle: true,
+          rfid_bid: true,
+          location: true,
+        },
+      },
     },
   });
 };
 
 module.exports = {
   create,
-  getAll,
+  getAllShelves,
+  getShelfById,
 };

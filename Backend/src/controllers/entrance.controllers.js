@@ -16,6 +16,19 @@ const enterLibrary = async (req, res, next) => {
   }
 };
 
+const getEntranceLog = async (req, res, next) => {
+  try {
+    const entrancelog = await entranceService.getEntranceLog();
+    res.status(200).json({
+      success: true,
+      data: entrancelog,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   enterLibrary,
+  getEntranceLog,
 };

@@ -1,9 +1,15 @@
 const prisma = require("../config/prisma");
 
-const borrowBook = async (borrowData) => {
-  const { patronRfid, bookRfid, dueDate } = borrowData;
+const borrowBook = async ({ patronRfid, bookRfid }) => {
+  if (!patronRfid) {
+    throw new Error("Patron RFID is required");
+  }
 
-  // Check if patron exists
+  if (!bookRfid) {
+    throw new Error("Book RFID is required");
+  }
+
+  // Find patron
   const patron = await prisma.patron.findUnique({
     where: {
       rfid_uid: patronRfid,
@@ -11,63 +17,140 @@ const borrowBook = async (borrowData) => {
   });
 
   if (!patron) {
-    throw new Error("Patron not found.");
+    throw new Error("Patron not found");
   }
 
-  // Check if book exists
+  // Find book
   const book = await prisma.book.findUnique({
     where: {
       rfid_bid: bookRfid,
     },
+    include: {
+      shelf: true,
+    },
   });
 
   if (!book) {
-    throw new Error("Book not found.");
+    throw new Error("Book not found");
   }
 
-  // Check if the book is already borrowed
-  if (!book.available) {
-    throw new Error("Book is already borrowed.");
+  if (book.location === "WITH_PATRON") {
+    throw new Error("Book is already borrowed");
   }
 
-  // Check if this patron already has an active borrowing
-  const existingBorrow = await prisma.borrowingBook.findFirst({
+  if (book.location === "ON_SHELF") {
+    throw new Error(
+      "Book is still on the shelf. Please take it through the Smart Shelf process first."
+    );
+  }
+
+  // Make sure the book does not already have an active borrowing
+  const existingBorrowing = await prisma.borrowingBook.findFirst({
     where: {
-      patronRfid,
       bookRfid,
       returned: false,
     },
   });
 
-  if (existingBorrow) {
-    throw new Error("This patron has already borrowed this book.");
+  if (existingBorrowing) {
+    throw new Error("Book is already borrowed");
   }
 
-  // Transaction
-  const borrowing = await prisma.$transaction(async (tx) => {
-    const borrowRecord = await tx.borrowingBook.create({
+  // Automatically calculate due date
+  // Currently: 14 days from today
+  const dueDate = new Date();
+  dueDate.setDate(dueDate.getDate() + 14);
+
+  // Perform all database changes as one transaction
+  const result = await prisma.$transaction(async (tx) => {
+    // Create borrowing record
+    const borrowing = await tx.borrowingBook.create({
       data: {
         patronRfid,
         bookRfid,
-        dueDate: new Date(dueDate),
+        dueDate,
       },
     });
 
-    await tx.book.update({
+    // Change book location
+    const updatedBook = await tx.book.update({
       where: {
         rfid_bid: bookRfid,
       },
       data: {
-        available: false,
+        location: "WITH_PATRON",
       },
     });
 
-    return borrowRecord;
+    // Record activity
+    await tx.shelfActivity.create({
+      data: {
+        patronRfid,
+        bookRfid,
+        eventType: "BOOK_BORROWED",
+      },
+    });
+
+    return {
+      borrowing,
+      book: updatedBook,
+    };
   });
 
-  return borrowing;
+  return {
+    borrowingId: result.borrowing.id,
+
+    patron: {
+      id: patron.id,
+      fullName: patron.fullName,
+      rfid_uid: patron.rfid_uid,
+      status: patron.status,
+    },
+
+    book: {
+      id: result.book.id,
+      bookTitle: result.book.bookTitle,
+      rfid_bid: result.book.rfid_bid,
+      shelfName: book.shelf.shelfName,
+      location: result.book.location,
+    },
+
+    borrowDate: result.borrowing.borrowDate,
+    dueDate: result.borrowing.dueDate,
+
+    message: "Book borrowed successfully",
+  };
+};
+
+const getAllBorrowings = async () => {
+  return await prisma.borrowingBook.findMany({
+    orderBy: {
+      borrowDate: "desc",
+    },
+
+    include: {
+      patron: {
+        select: {
+          id: true,
+          fullName: true,
+          rfid_uid: true,
+          status: true,
+        },
+      },
+
+      book: {
+        select: {
+          id: true,
+          bookTitle: true,
+          rfid_bid: true,
+          location: true,
+        },
+      },
+    },
+  });
 };
 
 module.exports = {
   borrowBook,
+  getAllBorrowings,
 };

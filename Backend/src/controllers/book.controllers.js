@@ -13,6 +13,19 @@ const create = async (req, res, next) => {
   }
 };
 
+const getBooks = async (req, res, next) => {
+  try {
+    const books = await bookService.getBooks();
+    res.status(200).json({
+      success: true,
+      data: books,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   create,
+  getBooks,
 };
