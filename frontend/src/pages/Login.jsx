@@ -26,11 +26,7 @@ function Login() {
     setLoading(true);
 
     try {
-      console.log("Sending:", formData);
-
       const response = await loginUser(formData);
-
-      console.log("Backend Response:", response);
 
       localStorage.setItem("token", response.token);
       localStorage.setItem("user", JSON.stringify(response.user));

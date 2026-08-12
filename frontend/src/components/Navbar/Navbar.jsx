@@ -1,6 +1,9 @@
 import "./dashboard-navbar.css";
 
-import { FaSearch, FaUserCircle } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { FaBell, FaSearch, FaUserCircle } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { getUnreadNotifications } from "../../api/notification.api";
 
 function Navbar() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -13,6 +16,29 @@ function Navbar() {
     month: "long",
     year: "numeric",
   });
+
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  const fetchUnreadNotifications = async () => {
+    try {
+      const response = await getUnreadNotifications();
+
+      setUnreadCount(response.data?.length || 0);
+    } catch (error) {
+      console.error("Failed to load unread notifications:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUnreadNotifications();
+
+    // Check for new notifications every 5 seconds
+    const interval = setInterval(() => {
+      fetchUnreadNotifications();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="dashboard-navbar">
@@ -31,6 +57,14 @@ function Navbar() {
       </div>
 
       <div className="dashboard-navbar-right">
+        <Link to="/dashboard/notifications" className="notification-bell">
+          <FaBell />
+
+          {unreadCount > 0 && (
+            <span className="notification-count">{unreadCount > 99 ? "99+" : unreadCount}</span>
+          )}
+        </Link>
+
         <div className="dashboard-profile">
           <FaUserCircle className="dashboard-profile-icon" />
 

@@ -107,7 +107,10 @@ model ShelfActivity {
   createdAt DateTime @default(now())
 
   patron Patron @relation(fields: [patronRfid], references: [rfid_uid])
+  
   book   Book?  @relation(fields: [bookRfid], references: [rfid_bid])
+
+  notifications Notification[]
 }
 
 enum ShelfEventType {
@@ -148,16 +151,21 @@ enum NotificationPriority {
 }
 
 model Notification {
-  id              Int                  @id @default(autoincrement())
-  title           String
-  message         String
-  type            NotificationType
-  priority        NotificationPriority @default(NORMAL)
-  isRead          Boolean              @default(false)
+  id       Int    @id @default(autoincrement())
 
-  patronRfid      String?
-  bookRfid        String?
+  title    String
+  message  String
+  type     NotificationType
+  priority NotificationPriority
+
+  isRead   Boolean  @default(false)
+
+  patronRfid String?
+  bookRfid   String?
+
   shelfActivityId Int?
 
-  createdAt       DateTime             @default(now())
+  createdAt DateTime @default(now())
+
+  shelfActivity ShelfActivity? @relation(fields: [shelfActivityId],references: [id])
 }

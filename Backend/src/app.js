@@ -10,6 +10,7 @@ const entranceRoutes = require("./routes/entrance.route");
 const exitRoutes = require("./routes/exit.route");
 const shelfRoutes = require("./routes/shelf.route");
 const smartshelfRoutes = require("./routes/smartShelf.routes");
+const notificationRoutes = require("./routes/notification.route");
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use("/api/smartshelf", smartshelfRoutes);
 app.use("/api/borrowing", borrowingRoutes);
 app.use("/api/entrance", entranceRoutes);
 app.use("/api/exit", exitRoutes);
+app.use("/api/notification", notificationRoutes);
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 module.exports = app;

@@ -6,7 +6,9 @@ import Books from "./pages/DashboardPages/Books";
 import Borrowing from "./pages/DashboardPages/Borrowing";
 import Entrance from "./pages/DashboardPages/Entrance";
 import Exit from "./pages/DashboardPages/Exit";
+import Notifications from "./pages/DashboardPages/Notifications";
 import Patrons from "./pages/DashboardPages/Patrons";
+import Settings from "./pages/DashboardPages/Settings";
 import Shelves from "./pages/DashboardPages/Shelves";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
@@ -28,6 +30,8 @@ function App() {
           <Route path="borrowing" element={<Borrowing />} />
           <Route path="entrance" element={<Entrance />} />
           <Route path="exit" element={<Exit />} />
+          <Route path="notifications" element={<Notifications />} />
+          <Route path="settings" element={<Settings />} />
           <Route path="*" element={<div>404 Not Found</div>} />
         </Route>
       </Routes>

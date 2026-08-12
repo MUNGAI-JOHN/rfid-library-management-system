@@ -1,5 +1,6 @@
 const prisma = require("../config/prisma");
 const path = require("path");
+const notificationService = require("./notification.service");
 
 const scanPatron = async (rfid_uid) => {
   if (!rfid_uid) {
@@ -243,6 +244,21 @@ const capture = async ({ bookRfid, imagePath }) => {
       eventType: "BOOK_PICKED",
     },
   });
+
+  const notification = await notificationService.createNotification({
+    title: "Problematic Patron Detected",
+    message: `A problematic patron picked a book from the Smart Shelf.`,
+    type: "PROBLEMATIC_PATRON",
+    priority: "HIGH",
+    patronRfid,
+    bookRfid,
+    shelfActivityId: activity.id,
+  });
+
+  return {
+    activity,
+    notification,
+  };
 
   // Close session
   await prisma.smartShelfSession.update({

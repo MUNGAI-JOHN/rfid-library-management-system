@@ -74,13 +74,17 @@ function Sidebar() {
         </li>
 
         <li>
-          <FaBell />
-          <span>Notifications</span>
+          <Link to="/dashboard/notifications">
+            <FaBell />
+            <span>Notifications</span>
+          </Link>
         </li>
 
         <li>
-          <FaCog />
-          <span>Settings</span>
+          <Link to="/dashboard/settings">
+            <FaCog />
+            <span>Settings</span>
+          </Link>
         </li>
       </ul>
 
