@@ -4,6 +4,8 @@ const borrowBook = async (req, res) => {
   try {
     const { patronRfid, bookRfid } = req.body;
 
+    console.log(req.body);
+
     const result = await borrowingService.borrowBook({
       patronRfid,
       bookRfid,

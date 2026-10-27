@@ -1,10 +1,9 @@
 generator client {
   provider = "prisma-client-js"
 }
-
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
 }
 
 model User {
@@ -46,7 +45,7 @@ model Book {
   bookTitle       String          @unique
   rfid_bid        String          @unique
   shelfId         Int
-  location BookLocation @default(ON_SHELF)
+  location        BookLocation    @default(ON_SHELF)
   shelf           Shelf           @relation(fields: [shelfId], references: [id])
   borrowingBooks  BorrowingBook[]
   exitLogs        ExitLogs[]
@@ -107,8 +106,8 @@ model ShelfActivity {
   createdAt DateTime @default(now())
 
   patron Patron @relation(fields: [patronRfid], references: [rfid_uid])
-  
-  book   Book?  @relation(fields: [bookRfid], references: [rfid_bid])
+
+  book Book? @relation(fields: [bookRfid], references: [rfid_bid])
 
   notifications Notification[]
 }
@@ -126,12 +125,12 @@ model SmartShelfSession {
 
   patronRfid String
 
-  startedAt DateTime @default(now())
-  endedAt DateTime?
+  startedAt DateTime  @default(now())
+  endedAt   DateTime?
 
   active Boolean @default(true)
 
-  patron Patron @relation(fields: [patronRfid],references: [rfid_uid])
+  patron Patron @relation(fields: [patronRfid], references: [rfid_uid])
 }
 
 enum NotificationType {
@@ -151,14 +150,14 @@ enum NotificationPriority {
 }
 
 model Notification {
-  id       Int    @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
   title    String
   message  String
   type     NotificationType
   priority NotificationPriority
 
-  isRead   Boolean  @default(false)
+  isRead Boolean @default(false)
 
   patronRfid String?
   bookRfid   String?
@@ -167,5 +166,5 @@ model Notification {
 
   createdAt DateTime @default(now())
 
-  shelfActivity ShelfActivity? @relation(fields: [shelfActivityId],references: [id])
+  shelfActivity ShelfActivity? @relation(fields: [shelfActivityId], references: [id])
 }

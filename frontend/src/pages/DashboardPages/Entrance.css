@@ -2,10 +2,6 @@
   padding: 35px;
 }
 
-/* =========================
-   HEADER
-========================= */
-
 .entrance-header {
   display: flex;
   justify-content: space-between;
@@ -23,10 +19,6 @@
   margin-top: 6px;
   color: #777;
 }
-
-/* =========================
-   REFRESH BUTTON
-========================= */
 
 .refresh-button {
   padding: 12px 20px;
@@ -47,10 +39,6 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
-
-/* =========================
-   STATISTICS
-========================= */
 
 .entrance-stats {
   display: grid;
@@ -78,10 +66,6 @@
   font-size: 30px;
 }
 
-/* =========================
-   MAIN CARD
-========================= */
-
 .entrance-card {
   background: white;
   border-radius: 15px;
@@ -103,10 +87,6 @@
   margin-top: 6px;
   color: #777;
 }
-
-/* =========================
-   TABLE
-========================= */
 
 .table-container {
   overflow-x: auto;
@@ -139,32 +119,6 @@ td {
 tbody tr:hover {
   background: #fafafa;
 }
-
-/* =========================
-   PATRON
-========================= */
-
-.patron-info {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.patron-icon {
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #e8f7ef;
-  border-radius: 50%;
-  font-size: 14px;
-}
-
-/* =========================
-   STATES
-========================= */
-
 .loading-state,
 .empty-state {
   padding: 50px;
@@ -179,10 +133,6 @@ tbody tr:hover {
   color: #777;
 }
 
-/* =========================
-   ERROR
-========================= */
-
 .error-message {
   background: #fdecec;
   color: #c62828;
@@ -190,10 +140,6 @@ tbody tr:hover {
   border-radius: 8px;
   margin-bottom: 20px;
 }
-
-/* =========================
-   RESPONSIVE
-========================= */
 
 @media (max-width: 700px) {
   .entrance-page {

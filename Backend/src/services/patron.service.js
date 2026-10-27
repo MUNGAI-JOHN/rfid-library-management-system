@@ -59,5 +59,4 @@ module.exports = {
   create,
   getAll,
   update,
-  // getPatronsByStatus,
 };

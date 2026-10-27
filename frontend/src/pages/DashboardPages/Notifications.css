@@ -164,6 +164,7 @@
   object-fit: cover;
   border-radius: 10px;
   border: 1px solid #ddd;
+  transform: rotate(180deg);
 }
 
 .view-image-button {

@@ -26,6 +26,6 @@ app.use("/api/borrowing", borrowingRoutes);
 app.use("/api/entrance", entranceRoutes);
 app.use("/api/exit", exitRoutes);
 app.use("/api/notification", notificationRoutes);
-app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 module.exports = app;

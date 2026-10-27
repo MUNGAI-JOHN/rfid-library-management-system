@@ -17,6 +17,35 @@ const scanPatron = async (rfid_uid) => {
     throw new Error("Patron not found");
   }
 
+  const patronEnter = await prisma.entranceLogs.findFirst({
+    where: {
+      patronRfid: rfid_uid,
+    },
+    orderBy: {
+      entranceTime: "desc",
+    },
+  });
+
+  if (!patronEnter) {
+    throw new Error("Patron has not verified entrance. Please scan at the entrance first.");
+  }
+
+  const previousExit = await prisma.exitLogs.findFirst({
+    where: {
+      patronRfid: rfid_uid,
+      exitTime: {
+        gt: patronEnter.entranceTime,
+      },
+    },
+    orderBy: {
+      exitTime: "desc",
+    },
+  });
+
+  if (previousExit) {
+    throw new Error("Patron has already exited the library. Please scan at the entrance.");
+  }
+
   // Check whether there is already an active session
   const existingSession = await prisma.smartShelfSession.findFirst({
     where: {
@@ -250,15 +279,10 @@ const capture = async ({ bookRfid, imagePath }) => {
     message: `A problematic patron picked a book from the Smart Shelf.`,
     type: "PROBLEMATIC_PATRON",
     priority: "HIGH",
-    patronRfid,
-    bookRfid,
+    patronRfid: patron.rfid_uid,
+    bookRfid: book.rfid_bid,
     shelfActivityId: activity.id,
   });
-
-  return {
-    activity,
-    notification,
-  };
 
   // Close session
   await prisma.smartShelfSession.update({
@@ -291,7 +315,7 @@ const capture = async ({ bookRfid, imagePath }) => {
     imageUrl: `/uploads/shelf/${fileName}`,
 
     eventType: "BOOK_PICKED",
-
+    notificationId: notification.id,
     message: "Photo captured and book picked successfully.",
   };
 };

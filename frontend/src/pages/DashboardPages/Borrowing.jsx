@@ -8,9 +8,6 @@ function Borrowing() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // =========================
-  // LOAD BORROWINGS
-  // =========================
 
   const loadBorrowings = async () => {
     try {
@@ -37,9 +34,6 @@ function Borrowing() {
     loadBorrowings();
   }, []);
 
-  // =========================
-  // CALCULATE STATISTICS
-  // =========================
 
   const activeBorrowings = borrowings.filter((borrowing) => !borrowing.returned);
 
@@ -49,9 +43,6 @@ function Borrowing() {
     (borrowing) => new Date(borrowing.dueDate) < new Date()
   );
 
-  // =========================
-  // FORMAT DATE
-  // =========================
 
   const formatDate = (date) => {
     if (!date) return "-";
@@ -62,11 +53,7 @@ function Borrowing() {
       year: "numeric",
     });
   };
-
-  // =========================
-  // STATUS
-  // =========================
-
+ 
   const getStatus = (borrowing) => {
     if (borrowing.returned) {
       return {
@@ -90,9 +77,6 @@ function Borrowing() {
 
   return (
     <div className="borrowing-page">
-      {/* =========================
-          HEADER
-      ========================= */}
 
       <div className="borrowing-header">
         <div>
@@ -106,15 +90,7 @@ function Borrowing() {
         </button>
       </div>
 
-      {/* =========================
-          ERROR
-      ========================= */}
-
       {error && <div className="error-message">{error}</div>}
-
-      {/* =========================
-          STATISTICS
-      ========================= */}
 
       <div className="borrowing-stats">
         <div className="stat-card">
@@ -145,10 +121,6 @@ function Borrowing() {
           </div>
         </div>
       </div>
-
-      {/* =========================
-          BORROWING TABLE
-      ========================= */}
 
       <div className="borrowing-card">
         <div className="table-header">

@@ -26,19 +26,6 @@ const getAll = async (req, res, next) => {
   }
 };
 
-// const getPatronsByStatus = async (req, res, next) => {
-//   try {
-//     const patrons = await patronService.getPatronsByStatus();
-
-//     res.status(200).json({
-//       success: true,
-//       data: patrons,
-//     });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
-
 const update = async (req, res, next) => {
   try {
     const patron = await patronService.update(req.params.id, req.body);
@@ -56,5 +43,4 @@ module.exports = {
   create,
   getAll,
   update,
-  // getPatronsByStatus,
 };

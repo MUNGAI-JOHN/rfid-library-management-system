@@ -12,6 +12,47 @@ const enterLibrary = async (patronRfid) => {
     throw new Error("Patron not found.");
   }
 
+  // Check the patron's most recent entrance
+  const lastEntrance = await prisma.entranceLogs.findFirst({
+    where: {
+      patronRfid,
+    },
+    orderBy: {
+      entranceTime: "desc",
+    },
+  });
+
+  // Check the patron's most recent exit
+  const lastExit = await prisma.exitLogs.findFirst({
+    where: {
+      patronRfid,
+    },
+    orderBy: {
+      exitTime: "desc",
+    },
+  });
+
+  // Patron is already inside if:
+  // 1. They have an entrance
+  // 2. There is no exit after that entrance
+  const alreadyInside =
+    lastEntrance && (!lastExit || lastEntrance.entranceTime > lastExit.exitTime);
+
+  if (alreadyInside) {
+    return {
+      alreadyInside: true,
+      entrance: lastEntrance,
+      patron: {
+        id: patron.id,
+        fullName: patron.fullName,
+        rfid_uid: patron.rfid_uid,
+        status: patron.status,
+      },
+      notification: null,
+      message: `${patron.fullName} is already inside the library.`,
+    };
+  }
+
   const entrance = await prisma.entranceLogs.create({
     data: {
       patronRfid,

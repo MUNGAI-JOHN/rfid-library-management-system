@@ -26,10 +26,9 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-  console.log("========== FILE UPLOAD ==========");
+  console.log("FILE UPLOAD ");
   console.log("Filename:", file.originalname);
   console.log("Mimetype:", file.mimetype);
-  console.log("=================================");
 
   const extension = path.extname(file.originalname).toLowerCase();
 

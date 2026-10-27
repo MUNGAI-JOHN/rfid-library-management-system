@@ -1,36 +1,31 @@
 import { useEffect, useState } from "react";
 import { createBook, getBooks } from "../../api/book.api";
+import { getShelves } from "../../api/shelf.api";
 import "./Books.css";
 
 function Books() {
-  // =========================
-  // BOOK LIST
-  // =========================
+
   const [books, setBooks] = useState([]);
 
-  // =========================
-  // ADD BOOK FORM
-  // =========================
+
+  const [shelves, setShelves] = useState([]);
+  const [shelvesLoading, setShelvesLoading] = useState(false);
+
   const [showForm, setShowForm] = useState(false);
 
   const [formData, setFormData] = useState({
     bookTitle: "",
     rfid_bid: "",
-    shelfName: "A",
+    shelfName: "",
   });
 
-  // =========================
-  // MESSAGES & LOADING
-  // =========================
+
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [booksLoading, setBooksLoading] = useState(true);
 
-  // =========================
-  // GET ALL BOOKS
-  // =========================
   const loadBooks = async () => {
     try {
       setBooksLoading(true);
@@ -49,14 +44,32 @@ function Books() {
     }
   };
 
-  // Load books when page opens
+  const loadShelves = async () => {
+    try {
+      setShelvesLoading(true);
+
+      const response = await getShelves();
+
+      console.log("Shelves response:", response);
+
+      if (response.success) {
+        setShelves(response.data);
+      }
+    } catch (error) {
+      console.error("Get shelves error:", error);
+
+      setError(error.response?.data?.message || "Failed to load shelves.");
+    } finally {
+      setShelvesLoading(false);
+    }
+  };
+
+
   useEffect(() => {
     loadBooks();
+    loadShelves();
   }, []);
 
-  // =========================
-  // HANDLE FORM INPUT
-  // =========================
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -64,39 +77,40 @@ function Books() {
     });
   };
 
-  // =========================
-  // OPEN ADD BOOK FORM
-  // =========================
-  const handleOpenForm = () => {
+  const handleOpenForm = async () => {
     setMessage("");
     setError("");
     setShowForm(true);
+
+    // Refresh shelves whenever the form opens
+    await loadShelves();
   };
 
-  // =========================
-  // CLOSE ADD BOOK FORM
-  // =========================
   const handleCloseForm = () => {
     setShowForm(false);
 
     setFormData({
       bookTitle: "",
       rfid_bid: "",
-      shelfName: "A",
+      shelfName: "",
     });
 
     setMessage("");
     setError("");
   };
 
-  // =========================
-  // CREATE BOOK
-  // =========================
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     setMessage("");
     setError("");
+
+    // Make sure shelf was selected
+    if (!formData.shelfName) {
+      setError("Please select a shelf.");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -110,7 +124,7 @@ function Books() {
       setFormData({
         bookTitle: "",
         rfid_bid: "",
-        shelfName: "A",
+        shelfName: "",
       });
 
       // Refresh book list
@@ -129,10 +143,7 @@ function Books() {
 
   return (
     <div className="books-page">
-      {/* =========================
-          PAGE HEADER
-      ========================= */}
-      <div className="books-header">
+       <div className="books-header">
         <div>
           <h1>Books</h1>
 
@@ -144,26 +155,18 @@ function Books() {
         </button>
       </div>
 
-      {/* =========================
-          SUCCESS MESSAGE
-      ========================= */}
       {message && <div className="success-message">{message}</div>}
 
-      {/* =========================
-          ERROR MESSAGE
-      ========================= */}
+
       {error && <div className="error-message">{error}</div>}
 
-      {/* =========================
-          ADD BOOK FORM
-      ========================= */}
       {showForm && (
         <div className="book-form-card">
           <div className="form-title">
             <div>
               <h2>Add New Book</h2>
 
-              <p>Register a book and associate it with its RFID tag.</p>
+              <p>Register a book and associate it with its RFID tag and shelf.</p>
             </div>
 
             <button type="button" className="close-form-button" onClick={handleCloseForm}>
@@ -204,8 +207,20 @@ function Books() {
             <div className="form-group">
               <label>Shelf</label>
 
-              <select name="shelfName" value={formData.shelfName} onChange={handleChange}>
-                <option value="A">Shelf A</option>
+              <select
+                name="shelfName"
+                value={formData.shelfName}
+                onChange={handleChange}
+                required
+                disabled={shelvesLoading}
+              >
+                <option value="">{shelvesLoading ? "Loading shelves..." : "Select a shelf"}</option>
+
+                {shelves.map((shelf) => (
+                  <option key={shelf.id} value={shelf.shelfName}>
+                    Shelf {shelf.shelfName}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -215,7 +230,11 @@ function Books() {
                 Cancel
               </button>
 
-              <button type="submit" className="submit-book-button" disabled={loading}>
+              <button
+                type="submit"
+                className="submit-book-button"
+                disabled={loading || shelvesLoading}
+              >
                 {loading ? "Adding Book..." : "Add Book"}
               </button>
             </div>
@@ -223,9 +242,6 @@ function Books() {
         </div>
       )}
 
-      {/* =========================
-          BOOK LIST
-      ========================= */}
       <div className="books-list-section">
         <div className="books-list-header">
           <h2>All Books</h2>
@@ -245,11 +261,8 @@ function Books() {
               <thead>
                 <tr>
                   <th>Title</th>
-
                   <th>RFID</th>
-
                   <th>Shelf</th>
-
                   <th>Location</th>
                 </tr>
               </thead>

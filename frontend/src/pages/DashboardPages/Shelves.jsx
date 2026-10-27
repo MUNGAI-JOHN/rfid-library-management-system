@@ -4,14 +4,10 @@ import { createShelf, getShelves } from "../../api/shelf.api";
 import "./Shelves.css";
 
 function Shelves() {
-  // =========================
-  // SHELVES
-  // =========================
+
   const [shelves, setShelves] = useState([]);
 
-  // =========================
-  // ADD SHELF FORM
-  // =========================
+
   const [showForm, setShowForm] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -19,18 +15,12 @@ function Shelves() {
     description: "",
   });
 
-  // =========================
-  // MESSAGES & LOADING
-  // =========================
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [shelvesLoading, setShelvesLoading] = useState(true);
 
-  // =========================
-  // GET ALL SHELVES
-  // =========================
   const loadShelves = async () => {
     try {
       setShelvesLoading(true);
@@ -57,9 +47,6 @@ function Shelves() {
     loadShelves();
   }, []);
 
-  // =========================
-  // HANDLE INPUT
-  // =========================
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -67,9 +54,6 @@ function Shelves() {
     });
   };
 
-  // =========================
-  // OPEN FORM
-  // =========================
   const handleOpenForm = () => {
     setMessage("");
     setError("");
@@ -82,9 +66,6 @@ function Shelves() {
     setShowForm(true);
   };
 
-  // =========================
-  // CLOSE FORM
-  // =========================
   const handleCloseForm = () => {
     setShowForm(false);
 
@@ -97,9 +78,6 @@ function Shelves() {
     setError("");
   };
 
-  // =========================
-  // CREATE SHELF
-  // =========================
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -135,9 +113,7 @@ function Shelves() {
 
   return (
     <div className="shelves-page">
-      {/* =========================
-          PAGE HEADER
-      ========================= */}
+
       <div className="shelves-header">
         <div>
           <h1>Shelves</h1>
@@ -150,19 +126,10 @@ function Shelves() {
         </button>
       </div>
 
-      {/* =========================
-          SUCCESS MESSAGE
-      ========================= */}
       {message && <div className="success-message">{message}</div>}
 
-      {/* =========================
-          ERROR MESSAGE
-      ========================= */}
       {error && <div className="error-message">{error}</div>}
 
-      {/* =========================
-          ADD SHELF FORM
-      ========================= */}
       {showForm && (
         <div className="shelf-form-card">
           <div className="form-title">
@@ -218,10 +185,6 @@ function Shelves() {
           </form>
         </div>
       )}
-
-      {/* =========================
-          SHELVES
-      ========================= */}
       <div className="shelves-section">
         <div className="shelves-section-header">
           <h2>Library Shelves</h2>

@@ -11,6 +11,7 @@ function Notifications() {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const backendUrl = "http://localhost:5121";
 
@@ -85,7 +86,6 @@ function Notifications() {
       <div className="notifications-header">
         <div>
           <h1>Notifications</h1>
-
           <p>Monitor security alerts and library activities.</p>
         </div>
 
@@ -145,13 +145,11 @@ function Notifications() {
                   <div className="notification-details">
                     <div className="detail-item">
                       <span>Patron</span>
-
                       <strong>{activity.patron?.fullName || notification.patronRfid}</strong>
                     </div>
 
                     <div className="detail-item">
                       <span>Book</span>
-
                       <strong>
                         {activity.book?.bookTitle || notification.bookRfid || "No book"}
                       </strong>
@@ -159,7 +157,6 @@ function Notifications() {
 
                     <div className="detail-item">
                       <span>Date</span>
-
                       <strong>{new Date(notification.createdAt).toLocaleString()}</strong>
                     </div>
                   </div>
@@ -173,16 +170,16 @@ function Notifications() {
                       src={imageUrl}
                       alt="Smart Shelf security capture"
                       className="notification-image"
+                      style={{ transform: "rotate(180deg)" }}
                     />
 
-                    <a
-                      href={imageUrl}
-                      target="_blank"
-                      rel="noreferrer"
+                    <button
+                      type="button"
                       className="view-image-button"
+                      onClick={() => setSelectedImage(imageUrl)}
                     >
                       View Full Image
-                    </a>
+                    </button>
                   </div>
                 )}
 
@@ -194,6 +191,38 @@ function Notifications() {
               </div>
             );
           })}
+        </div>
+      )}
+
+      {/* Full-screen Rotated Lightbox Modal */}
+      {selectedImage && (
+        <div
+          className="image-modal-overlay"
+          onClick={() => setSelectedImage(null)}
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(0, 0, 0, 0.85)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 1000,
+            cursor: "pointer",
+          }}
+        >
+          <img
+            src={selectedImage}
+            alt="Full view capture"
+            style={{
+              maxHeight: "90vh",
+              maxWidth: "90vw",
+              transform: "rotate(180deg)",
+              borderRadius: "8px",
+            }}
+          />
         </div>
       )}
     </div>

@@ -19,6 +19,36 @@ const borrowBook = async ({ patronRfid, bookRfid }) => {
   if (!patron) {
     throw new Error("Patron not found");
   }
+  const patronEnter = await prisma.entranceLogs.findFirst({
+    where: {
+      patronRfid,
+    },
+    orderBy: {
+      entranceTime: "desc",
+    },
+  });
+
+  if (!patronEnter) {
+    throw new Error("Patron has not verified entrance. Please scan at the library entrance first.");
+  }
+
+  const previousExit = await prisma.exitLogs.findFirst({
+    where: {
+      patronRfid,
+      exitTime: {
+        gt: patronEnter.entranceTime,
+      },
+    },
+    orderBy: {
+      exitTime: "desc",
+    },
+  });
+
+  if (previousExit) {
+    throw new Error(
+      "Patron has already exited the library. Please scan at the entrance before exiting again."
+    );
+  }
 
   // Find book
   const book = await prisma.book.findUnique({

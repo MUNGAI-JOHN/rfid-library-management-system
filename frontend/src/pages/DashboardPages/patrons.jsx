@@ -244,7 +244,7 @@ function Patrons() {
                   name="rfid_uid"
                   value={formData.rfid_uid}
                   onChange={handleChange}
-                  placeholder="e.g. SC/com/0031/24"
+                  placeholder="e.g. sccom003122"
                   required
                 />
               </div>

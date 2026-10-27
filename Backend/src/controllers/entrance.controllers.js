@@ -3,6 +3,7 @@ const entranceService = require("../services/entrance.service");
 const enterLibrary = async (req, res, next) => {
   try {
     const { patronRfid } = req.body;
+    console.log(req.body);
 
     const entrance = await entranceService.enterLibrary(patronRfid);
 

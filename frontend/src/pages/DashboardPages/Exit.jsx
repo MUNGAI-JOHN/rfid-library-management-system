@@ -113,6 +113,7 @@ function Exit() {
               <thead>
                 <tr>
                   <th>#</th>
+                  <th>Patron Name</th>
                   <th>Patron RFID</th>
                   <th>Book RFID</th>
                   <th>Status</th>
@@ -124,6 +125,8 @@ function Exit() {
                 {logs.map((log, index) => (
                   <tr key={log.id}>
                     <td>{index + 1}</td>
+
+                    <td>{log.patron?.fullName}</td>
 
                     <td>
                       <strong>{log.patronRfid}</strong>

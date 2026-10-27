@@ -114,6 +114,7 @@ function Entrance() {
               <thead>
                 <tr>
                   <th>#</th>
+                  <th>Patron Name</th>
                   <th>Patron RFID</th>
                   <th>Entrance Time</th>
                 </tr>
@@ -123,13 +124,9 @@ function Entrance() {
                 {logs.map((log, index) => (
                   <tr key={log.id}>
                     <td>{index + 1}</td>
-
+                    <td>{log.patron?.fullName}</td>
                     <td>
-                      <div className="patron-info">
-                        <span className="patron-icon">👤</span>
-
-                        <strong>{log.patronRfid}</strong>
-                      </div>
+                      <strong>{log.patronRfid}</strong>
                     </td>
 
                     <td>{formatDate(log.entranceTime)}</td>

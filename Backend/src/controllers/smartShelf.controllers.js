@@ -3,9 +3,7 @@ const smartShelfService = require("../services/smartShelf.service");
 const scanPatron = async (req, res) => {
   try {
     const { rfid_uid } = req.body;
-
     const result = await smartShelfService.scanPatron(rfid_uid);
-
     res.status(200).json({
       success: true,
       data: result,
@@ -21,7 +19,6 @@ const scanPatron = async (req, res) => {
 const scanBook = async (req, res) => {
   try {
     const { bookRfid } = req.body;
-
     const result = await smartShelfService.scanBook(bookRfid);
 
     res.status(200).json({
@@ -38,10 +35,9 @@ const scanBook = async (req, res) => {
 
 const capture = async (req, res) => {
   try {
-    console.log("========== CAPTURE START ==========");
+    console.log(" CAPTURE START");
     console.log("BODY:", req.body);
     console.log("FILE:", req.file);
-    console.log("===================================");
 
     const { bookRfid } = req.body;
 
@@ -63,8 +59,6 @@ const capture = async (req, res) => {
     }
 
     console.log("✅ IMAGE RECEIVED");
-    console.log("Filename:", req.file.filename);
-    console.log("Path:", req.file.path);
 
     const data = await smartShelfService.capture({
       bookRfid,

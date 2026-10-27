@@ -2,10 +2,6 @@
   padding: 35px;
 }
 
-/* =========================
-   HEADER
-========================= */
-
 .borrowing-header {
   display: flex;
   justify-content: space-between;
@@ -23,10 +19,6 @@
   margin-top: 6px;
   color: #777;
 }
-
-/* =========================
-   REFRESH BUTTON
-========================= */
 
 .refresh-button {
   padding: 12px 20px;
@@ -47,10 +39,6 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
-
-/* =========================
-   STATS
-========================= */
 
 .borrowing-stats {
   display: grid;
@@ -78,10 +66,6 @@
   font-size: 30px;
 }
 
-/* =========================
-   MAIN CARD
-========================= */
-
 .borrowing-card {
   background: white;
   border-radius: 15px;
@@ -103,10 +87,6 @@
   margin-top: 6px;
   color: #777;
 }
-
-/* =========================
-   TABLE
-========================= */
 
 .table-container {
   overflow-x: auto;
@@ -140,10 +120,6 @@ tbody tr:hover {
   background: #fafafa;
 }
 
-/* =========================
-   PATRON / BOOK INFO
-========================= */
-
 .patron-info,
 .book-info {
   display: flex;
@@ -163,10 +139,6 @@ tbody tr:hover {
   font-size: 12px;
 }
 
-/* =========================
-   LOCATION
-========================= */
-
 .location-badge {
   display: inline-block;
   padding: 6px 10px;
@@ -176,10 +148,6 @@ tbody tr:hover {
   font-size: 11px;
   font-weight: 600;
 }
-
-/* =========================
-   STATUS
-========================= */
 
 .status-badge {
   display: inline-block;
@@ -204,9 +172,6 @@ tbody tr:hover {
   color: #c62828;
 }
 
-/* =========================
-   STATES
-========================= */
 
 .loading-state,
 .empty-state {
@@ -222,10 +187,6 @@ tbody tr:hover {
   color: #777;
 }
 
-/* =========================
-   ERROR
-========================= */
-
 .error-message {
   background: #fdecec;
   color: #c62828;
@@ -233,10 +194,6 @@ tbody tr:hover {
   border-radius: 8px;
   margin-bottom: 20px;
 }
-
-/* =========================
-   RESPONSIVE
-========================= */
 
 @media (max-width: 900px) {
   .borrowing-stats {

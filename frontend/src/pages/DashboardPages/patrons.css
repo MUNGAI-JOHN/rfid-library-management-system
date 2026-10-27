@@ -35,9 +35,9 @@
 .add-patron-btn {
   border: none;
 
-  background: #d4af37;
+  background: #0b6e4f;
 
-  color: #0b6e4f;
+  color: white;
 
   padding: 13px 20px;
 
@@ -59,9 +59,10 @@
 }
 
 .add-patron-btn:hover {
-  transform: translateY(-2px);
+  background: #095c42;
+  /* transform: translateY(-2px);
 
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); */
 }
 
 /* MESSAGES */
