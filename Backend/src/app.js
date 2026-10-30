@@ -13,6 +13,12 @@ const smartshelfRoutes = require("./routes/smartShelf.routes");
 const notificationRoutes = require("./routes/notification.route");
 
 const app = express();
+app.get("/", (req, res) => {
+  res.json({
+    status: "success",
+    message: "RFID Library Management System API is running!",
+  });
+});
 
 app.use(cors());
 app.use(express.json());
