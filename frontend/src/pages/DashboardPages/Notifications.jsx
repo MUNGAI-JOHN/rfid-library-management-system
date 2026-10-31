@@ -13,7 +13,8 @@ function Notifications() {
   const [error, setError] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
 
-  const backendUrl = "http://localhost:5121";
+  // const backendUrl = "http://localhost:5121";
+  const backendUrl = "https://rfid-library-management-system-62xu.onrender.com";
 
   const fetchNotifications = async () => {
     try {

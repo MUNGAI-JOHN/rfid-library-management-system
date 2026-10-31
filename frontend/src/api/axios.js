@@ -1,7 +1,11 @@
 import axios from "axios";
 
+// const api = axios.create({
+//   baseURL: "http://localhost:5121/api",
+// });
+
 const api = axios.create({
-  baseURL: "http://localhost:5121/api",
+  baseURL: "https://rfid-library-management-system-62xu.onrender.com/api",
 });
 
 api.interceptors.request.use((config) => {
