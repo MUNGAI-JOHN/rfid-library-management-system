@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { FaPlus, FaTimes } from "react-icons/fa";
 import { createPatron, getPatrons, updatePatron } from "../../api/patron.api";
-import "./Patrons.css";
+import "./patrons.css";
 
 function Patrons() {
   const [showForm, setShowForm] = useState(false);

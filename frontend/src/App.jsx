@@ -7,7 +7,7 @@ import Borrowing from "./pages/DashboardPages/Borrowing";
 import Entrance from "./pages/DashboardPages/Entrance";
 import Exit from "./pages/DashboardPages/Exit";
 import Notifications from "./pages/DashboardPages/Notifications";
-import Patrons from "./pages/DashboardPages/Patrons";
+import Patrons from "./pages/DashboardPages/patrons";
 import Settings from "./pages/DashboardPages/Settings";
 import Shelves from "./pages/DashboardPages/Shelves";
 import Landing from "./pages/Landing";
